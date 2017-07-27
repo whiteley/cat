@@ -10,7 +10,8 @@ import (
 
 func main() {
 	var (
-		countFlag = flag.Bool("count", false, "print number of bytes read")
+		countFlag  = flag.Bool("count", false, "print number of bytes read")
+		stderrFlag = flag.Bool("stderr", false, "write to stderr instead of stdout")
 	)
 	flag.Parse()
 
@@ -19,7 +20,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	if count, err := io.Copy(os.Stdout, file); err != nil {
+	out := os.Stdout
+	if *stderrFlag == true {
+		out = os.Stderr
+	}
+
+	if count, err := io.Copy(out, file); err != nil {
 		log.Fatal(err)
 	} else if *countFlag == true {
 		fmt.Println(count, "bytes read")
