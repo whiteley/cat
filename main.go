@@ -19,6 +19,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer file.Close()
 
 	out := os.Stdout
 	if *stderrFlag == true {
